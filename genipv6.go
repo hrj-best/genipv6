@@ -20,8 +20,8 @@ type GenIPv6 struct {
 func (g GenIPv6) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (int, error) {
 	state := request.Request{W: w, Req: r}
 
-	// 解析客户端 IPv4
-	clientIP := net.ParseIP(state.IP()).To4()
+	// 解析客户端 IPv6
+	clientIP := net.ParseIP(state.IP()).To16()
 	if clientIP == nil {
 		return dns.RcodeServerFailure, nil
 	}
@@ -31,7 +31,7 @@ func (g GenIPv6) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg)
 	domainBytes := []byte(domain)                   // 直接获取域名的二进制 ASCII 字节
 
 	// 生成 SHA-256 哈希
-	hashInput := append(clientIP, domainBytes...) // 拼接 [用户 IP (4 字节) | 域名 ASCII]
+	hashInput := append(clientIP, domainBytes...) // 拼接 [用户 IP (16 字节) | 域名 ASCII]
 	hash := sha256.Sum256(hashInput)              // 计算哈希
 
 	// 取哈希的后 64 位
