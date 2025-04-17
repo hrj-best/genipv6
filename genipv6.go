@@ -28,6 +28,9 @@ func (g GenIPv6) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg)
 
 	// 解析查询的域名，并转换为 ASCII
 	domain := strings.TrimSuffix(state.Name(), ".") // 去掉末尾的点
+	if domain != "hrjdns.asia" {
+		return dns.RcodeSuccess, nil
+	}
 	domainBytes := []byte(domain)                   // 直接获取域名的二进制 ASCII 字节
 
 	// 生成 SHA-256 哈希
