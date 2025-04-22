@@ -28,7 +28,7 @@ func (g GenIPv6) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg)
 
 	// 解析查询的域名，并转换为 ASCII
 	domain := strings.TrimSuffix(state.Name(), ".") // 去掉末尾的点
-	if domain != "hrjdns.asia" {
+	if domain != "hrjdns.asia" && domain != "qazdns.asia" {
     		w.WriteMsg(r)
 		return dns.RcodeSuccess, nil
 	}
