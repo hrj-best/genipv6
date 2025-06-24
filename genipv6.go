@@ -33,9 +33,10 @@ func (g GenIPv6) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg)
 		return dns.RcodeSuccess, nil
 	}
 	domainBytes := []byte(domain)                   // 直接获取域名的二进制 ASCII 字节
-
+	salt := []byte("c20b8d3dcdd42127")
+	
 	// 生成 SHA-256 哈希
-	hashInput := append(clientIP, domainBytes...) // 拼接 [用户 IP (16 字节) | 域名 ASCII]
+	hashInput := append(clientIP, domainBytes,salt...) // 拼接 [用户 IP (16 字节) | 域名 ASCII]
 	hash := sha256.Sum256(hashInput)              // 计算哈希
 
 	// 取哈希的后 64 位
